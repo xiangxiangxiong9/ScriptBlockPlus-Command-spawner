@@ -11,10 +11,7 @@ jobs:
       - python/load-cache
       - python/install-deps
       - python/save-cache
-      - run:
-          command: ./manage.py test
-          name: Test
-
+      - run: pyinstaller -F ScriptBlockPlusCommandSpawner.py
 workflows:
   main:
     jobs:
