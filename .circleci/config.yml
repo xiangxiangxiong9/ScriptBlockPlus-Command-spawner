@@ -11,7 +11,7 @@ jobs:
       - python/load-cache
       - python/install-deps
       - python/save-cache
-      - run: pip -U PyInstaller
+      - run: pip install -U PyInstaller
       - run: pyinstaller -F ScriptBlockPlusCommandSpawner.py
 workflows:
   main:
