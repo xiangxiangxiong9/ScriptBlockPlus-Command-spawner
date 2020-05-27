@@ -1,0 +1,52 @@
+#action type
+novalid:请选择
+$cost:需要且消耗钱
+$item:需要且消耗物品[<物品id> [数量]]
+@actionbar:发送快捷栏信息[内容 时间]
+@amount:允许执行的总次数
+@blocktype:互动方块类型[方块id]
+@bypass:以OP身份执行
+@calc:计算[papi变量 >=< 值 失败返回信息]
+@command:以玩家自身身份执行
+@console:以控制台身份执行
+@cooldown:冷却
+@delay:延迟
+@execute:执行指定类型、坐标的脚本方块[类型/x y z]
+@group:执行需要权限组
+@groupADD:追加权限组
+@groupREMOVE:去除权限组
+@hand:检查手里的物品[<方块id> [数量]]
+@oldcooldown:全服冷却
+@perm:执行需要权限
+@permADD:追加权限
+@permREMOVE:去除权限
+@player:给玩家自己发信息
+@say:玩家说话
+@scriptaction:执行互动方式
+@server:作用不明[跨服?]
+@sound:给玩家播放声音
+@title:显示标题[主标题/副标题]
+
+#script type
+interact:互动
+walk:走过
+break:破坏
+
+#Todo
+create:创建
+add:添加
+remove:移除
+
+#button
+CheckToAdd:点击添加
+ClearTextInput:清空文本输入区
+ClearTemp:清空缓冲区
+OutPut:输出
+
+#Information
+OutputTitle:成功
+outputMessage:已将指令复制到剪切板\n注意: 如果命令长度长于256，请使用命令块以及essentials的sudo
+TempText:缓冲区
+AddSuccess:添加成功
+AddFailed:添加失败
+WindowTitle:ScriptBlockPlus指令生成器
