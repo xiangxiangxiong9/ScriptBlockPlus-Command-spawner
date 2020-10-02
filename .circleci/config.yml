@@ -12,7 +12,10 @@ jobs:
       - python/install-deps
       - python/save-cache
       - run:
-          command: PyInstaller -F ./ScriptBlockPlusCommandSpawner.py
+          command: ls /usr/local/lib/python3.8/dist-packages
+          name: Found PyInstaller
+      - run:
+          command: /usr/local/lib/python3.8/dist-packages/PyInstaller -F ./ScriptBlockPlusCommandSpawner.py
           name: Test
 
 workflows:
