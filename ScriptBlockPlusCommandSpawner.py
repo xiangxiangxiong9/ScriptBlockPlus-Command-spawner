@@ -186,7 +186,10 @@ except IOError:
         Language = os.getcwd() + '\\languages\\language_en.txt'
 print('\033[1;32mUsing Language File: \033[1;33m' + Language)
 # 窗口
-window = tk.Tk()
+try:
+    window = tk.Tk()
+except:
+    print("This program needs a graphical interface")
 window.geometry('1000x600')
 # 语言文件读取
 #语言文件var设置[更换方式 [20201002]]
