@@ -1,4 +1,4 @@
-#action type
+#ActionType
 novalid:Please choose
 $cost:Need and cost money
 $item:Need and cost item[<item's id> [Many]]
@@ -27,7 +27,7 @@ $item:Need and cost item[<item's id> [Many]]
 @sound:Play a sound for the player
 @title:Display title [main_title / subtitle]
 
-#script type
+#ScriptType
 interact:interact
 walk:walk
 break:break
@@ -37,16 +37,22 @@ create:create
 add:add
 remove:remove
 
-#button
+#Button
 CheckToAdd:Check To Add
 ClearTextInput:CLear Text Input
 ClearTemp:Clear Temp
 OutPut:Output
+Restart:Restart
 
 #Information
-OutputTitle:Success
-outputMessage:The instructions have been copied to the clipboard\nNote: If the command length is longer than 256, please use the command block and essentials's sudo
+OutputTitle1:Copy to ClipBoard?
+OutputTitle2:Success
+OutputMessage:The instructions have been copied to the clipboard
+Note: If the command length is longer than 256, please use the command block and essentials's sudo
 TempText:Temp
 AddSuccess:Added successfully
 AddFailed:Added failed
 WindowTitle:ScriptBlockPlus Command Spawmer
+RestartMessageboxTitle:Restart?
+RestartMessageboxMessage:Do you want to restart this process?Unsaved data will be lost
+Restarting:Restarting!
