@@ -190,6 +190,7 @@ try:
     window = tk.Tk()
 except:
     print("This program needs a graphical interface")
+    sys.exit(0)
 window.geometry('1000x600')
 # 语言文件读取
 #语言文件var设置[更换方式 [20201002]]
