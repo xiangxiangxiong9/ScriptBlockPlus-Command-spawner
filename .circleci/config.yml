@@ -12,6 +12,9 @@ jobs:
       - python/install-deps
       - python/save-cache
       - run:
+          command: locate -b pyinstaller | less
+          name: found something
+      - run:
           command: python3 pyinstaller.py -F ./ScriptBlockPlusCommandSpawner.py
           name: Test
 
