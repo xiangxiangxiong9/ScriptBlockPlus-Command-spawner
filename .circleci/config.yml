@@ -12,7 +12,7 @@ jobs:
       - python/install-deps
       - python/save-cache
       - run:
-          command: python3 ./ScriptBlockPlusCommandSpawner.py
+          command: pyinstall -F ./ScriptBlockPlusCommandSpawner.py
           name: Test
 
 workflows:
