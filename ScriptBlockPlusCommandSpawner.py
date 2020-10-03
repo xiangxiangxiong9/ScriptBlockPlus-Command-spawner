@@ -37,7 +37,7 @@ for configfound in Configfile.readlines():
 def WtireTranslateFile(Language):
     if Language == 'en':
         with open('languages/language_en.txt', 'w+', encoding='utf-8') as file:
-            file.write('''#ActionType
+            file.write(r'''#ActionType
 novalid:Please choose
 $cost:Need and cost money
 $item:Need and cost item[<item's id> [Many]]
@@ -97,7 +97,7 @@ Restarting:Restarting!
 ''')
     elif Language == 'zh':
         with open('languages/language_zh.txt', 'w+', encoding='utf-8') as file:
-            file.write('''#ActionType
+            file.write(r'''#ActionType
 novalid:请选择
 $cost:需要且消耗钱
 $item:需要且消耗物品[<物品id> [数量]]

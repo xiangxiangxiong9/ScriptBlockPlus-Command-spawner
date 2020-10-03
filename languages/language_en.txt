@@ -47,8 +47,7 @@ Restart:Restart
 #Information
 OutputTitle1:Copy to ClipBoard?
 OutputTitle2:Success
-OutputMessage:The instructions have been copied to the clipboard
-Note: If the command length is longer than 256, please use the command block and essentials's sudo
+OutputMessage:The instructions have been copied to the clipboard\nNote: If the command length is longer than 256, please use the command block and essentials's sudo
 TempText:Temp
 AddSuccess:Added successfully
 AddFailed:Added failed

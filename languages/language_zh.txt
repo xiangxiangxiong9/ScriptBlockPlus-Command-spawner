@@ -47,12 +47,11 @@ Restart:重启
 #Information
 OutputTitle1:复制到剪切板?
 OutputTitle2:成功
-OutputMessage:已将指令复制到剪切板
-注意: 如果命令长度长于256，请使用命令块以及essentials的sudo
+OutputMessage:已将指令复制到剪切板\n注意: 如果命令长度长于256，请使用命令块以及essentials的sudo
 TempText:缓冲区
 AddSuccess:添加成功
 AddFailed:添加失败
 WindowTitle:ScriptBlockPlus指令生成器
 RestartMessageboxTitle:重启？
-RestartMessageboxMessage:你想要重启这个程序吗？为保存的数据将会丢失
+RestartMessageboxMessage:你想要重启这个程序吗？未保存的数据将会丢失
 Restarting:重启中!
