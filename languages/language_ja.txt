@@ -1,62 +1,60 @@
 #NOTE! This file is not finish!
 #Translation may be inaccurate!
-＃このファイルはまだ完成していません！
-＃翻訳が不正確になる可能性があります！
 
 #ActionType
-novalid:
-$cost:
-$item:
-@actionbar:
-@amount:
-@blocktype:
-@bypass:
-@calc:
-@command:
-@console:
-@cooldown:
-@delay:
-@execute:
-@group:
-@groupADD:
-@groupREMOVE:
-@hand:
-@oldcooldown:
-@perm:
-@permADD:
-@permREMOVE:
-@player:
-@say:
-@scriptaction:
-@server:
-@sound:
-@title:
+novalid:選択を行ってください。
+$cost:お金を消費します。[<値段>]
+$item:アイテムを消費します。[<アイテムID>[:ダメージ値] <個数> [名前]]
+@actionbar:アクションバーにメッセージを送信します。[<メッセージ>[/秒数]]
+@amount:実行回数に制限を設けます。[<回数>]
+@blocktype:実行できるブロックを制限します。[<ブロックID>,...]
+@bypass:権限を無視してコマンドを実行します。[[/]<コマンド>]
+@calc:計算を行います。[<値1> <演算子> <値2> [失敗メッセージ]]
+@command:コマンドを実行します。[[/]<コマンド>]
+@console:コンソールからコマンドを実行します。[[/]<コマンド>]
+@cooldown:プレイヤー別のクールタイムを設定します。[<秒数>]
+@delay:遅延して実行します。[<秒数>[/終了まで実行不可(true / false)]]
+@execute:スクリプトを実行します。[<スクリプトの種類>/<ワールド名,x,y,z>]
+@group:実行できるグループを制限します。[[ワールド名/]<グループ>]
+@groupADD:グループを追加します。[[ワールド名/]<グループ>]
+@groupREMOVE:グループを削除します。[[ワールド名/]<グループ>]
+@hand:手に持っているアイテムを制限します。[<アイテムID>[:ダメージ値] <個数> [名前]]
+@oldcooldown:プレイヤー共通のクールタイムを設定します。[<秒数>]
+@perm:パーミッションを判定します。[[ワールド名/]<権限>]
+@permADD:パーミッションを追加します。[[ワールド名/]<権限>]
+@permREMOVE:パーミッションを削除します。[[ワールド名/]<権限>]
+@player:メッセージを送信します。[<メッセージ>]
+@say:Sayコマンドを送信します。[<メッセージ>]
+@scriptaction:アクションを制限します。[<アクション>,...]
+@server:サーバー全体にメッセージを送信します。[<メッセージ>]
+@sound:サウンドを再生します。[<サウンドID>-<音量>-<高さ>[-遅延][/ワールド全体に再生(true / false)]]
+@title:タイトルを送信します。[<メイン>[/サブ][/表示-待ち-消滅]]
 
 #ScriptType
-interact:
-walk:
-break:
+interact:interact
+walk:walk
+break:break
 
 #Todo
-create:
-add:
-remove:
+create:作成
+add:追加
+remove:削除
 
 #Button
-CheckToAdd:
-ClearTextInput:
-ClearTemp:
-OutPut:
-Restart:
+CheckToAdd:クリックして追加
+ClearTextInput:テキストをクリア
+ClearTemp:バッファをクリア
+OutPut:出力
+Restart:再起動
 
 #Information
-OutputTitle1
-OutputTitle2
-OutputMessage:
-TempText:
-AddSuccess:
-AddFailed:
-WindowTitle:
-RestartMessageboxTitle:
-RestartMessageboxMessage:
-Restarting:
+OutputTitle1:クリップボードにコピーしますか？
+OutputTitle2:成功
+OutputMessage:コマンドはクリップボードにコピーされました。\n注: コマンドの長さが256を超える場合は、コマンドブロックとEssentialsを使用してください。
+TempText:バッファ
+AddSuccess:追加に成功しました。
+AddFailed:追加に失敗しました。
+WindowTitle:ScriptBlockPlus Command Spawmer
+RestartMessageboxTitle:再起動を行いますか？
+RestartMessageboxMessage:このプログラムを再起動行いますか？保存されていないデータは失われます。
+Restarting:再起動を行います！
