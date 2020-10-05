@@ -1,6 +1,3 @@
-#NOTE! This file is not finish!
-#Translation may be inaccurate!
-
 #ActionType
 novalid:選択を行ってください。
 $cost:お金を消費します。[<値段>]

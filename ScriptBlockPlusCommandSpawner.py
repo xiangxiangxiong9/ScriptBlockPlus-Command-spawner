@@ -6,6 +6,7 @@ import sys
 import re
 import subprocess
 import codecs
+import platform
 import pyperclip
 import tkinter as tk
 import tkinter.ttk as ttk
@@ -15,13 +16,16 @@ import colorama
 from colorama import init, Fore, Back, Style
 init(autoreset=True)
 # 语言文件获取
-Config = os.getcwd() + '\\config.txt'
+if 'Windows' in platform.platform():
+    Config = os.getcwd() + '\\config.txt'
+elif 'Linux' in platform.platform():
+    Config = os.getcwd() + '/config.txt'
 # 判断文件是否存在
 try:
     f = open(Config, 'r', encoding='utf-8')
     f.close()
 except IOError:
-    print("\033[1;31;40mConfig file does not exise!Creating!")
+    print("\033[1;31mConfig file does not exise!Creating!")
     with open(Config, 'w+', encoding='utf-8') as file:
         file.write(
             'please make sure that /language/language_[Language].txt exist\nLanguage:en')
@@ -34,7 +38,7 @@ for configfound in Configfile.readlines():
     Configfile.close()
 
 
-def WtireTranslateFile(Language):
+def WriteTranslateFile(Language):
     if Language == 'en':
         with open('languages/language_en.txt', 'w+', encoding='utf-8') as file:
             file.write(r'''#ActionType
@@ -94,6 +98,66 @@ WindowTitle:ScriptBlockPlus Command Spawmer
 RestartMessageboxTitle:Restart?
 RestartMessageboxMessage:Do you want to restart this process?Unsaved data will be lost
 Restarting:Restarting!
+''')
+    elif Language == 'ja':
+        with open('languages/Language_ja.txt', 'w+', encoding='utf-8') as file:
+            file.write(r'''#ActionType
+novalid:選択を行ってください。
+$cost:お金を消費します。[<値段>]
+$item:アイテムを消費します。[<アイテムID>[:ダメージ値] <個数> [名前]]
+@actionbar:アクションバーにメッセージを送信します。[<メッセージ>[/秒数]]
+@amount:実行回数に制限を設けます。[<回数>]
+@blocktype:実行できるブロックを制限します。[<ブロックID>,...]
+@bypass:権限を無視してコマンドを実行します。[[/]<コマンド>]
+@calc:計算を行います。[<値1> <演算子> <値2> [失敗メッセージ]]
+@command:コマンドを実行します。[[/]<コマンド>]
+@console:コンソールからコマンドを実行します。[[/]<コマンド>]
+@cooldown:プレイヤー別のクールタイムを設定します。[<秒数>]
+@delay:遅延して実行します。[<秒数>[/終了まで実行不可(true / false)]]
+@execute:スクリプトを実行します。[<スクリプトの種類>/<ワールド名,x,y,z>]
+@group:実行できるグループを制限します。[[ワールド名/]<グループ>]
+@groupADD:グループを追加します。[[ワールド名/]<グループ>]
+@groupREMOVE:グループを削除します。[[ワールド名/]<グループ>]
+@hand:手に持っているアイテムを制限します。[<アイテムID>[:ダメージ値] <個数> [名前]]
+@oldcooldown:プレイヤー共通のクールタイムを設定します。[<秒数>]
+@perm:パーミッションを判定します。[[ワールド名/]<権限>]
+@permADD:パーミッションを追加します。[[ワールド名/]<権限>]
+@permREMOVE:パーミッションを削除します。[[ワールド名/]<権限>]
+@player:メッセージを送信します。[<メッセージ>]
+@say:Sayコマンドを送信します。[<メッセージ>]
+@scriptaction:アクションを制限します。[<アクション>,...]
+@server:サーバー全体にメッセージを送信します。[<メッセージ>]
+@sound:サウンドを再生します。[<サウンドID>-<音量>-<高さ>[-遅延][/ワールド全体に再生(true / false)]]
+@title:タイトルを送信します。[<メイン>[/サブ][/表示-待ち-消滅]]
+
+#ScriptType
+interact:interact
+walk:walk
+break:break
+
+#Todo
+create:作成
+add:追加
+remove:削除
+
+#Button
+CheckToAdd:クリックして追加
+ClearTextInput:テキストをクリア
+ClearTemp:バッファをクリア
+OutPut:出力
+Restart:再起動
+
+#Information
+OutputTitle1:クリップボードにコピーしますか？
+OutputTitle2:成功
+OutputMessage:コマンドはクリップボードにコピーされました。\n注: コマンドの長さが256を超える場合は、コマンドブロックとEssentialsを使用してください。
+TempText:バッファ
+AddSuccess:追加に成功しました。
+AddFailed:追加に失敗しました。
+WindowTitle:ScriptBlockPlus Command Spawmer
+RestartMessageboxTitle:再起動を行いますか？
+RestartMessageboxMessage:このプログラムを再起動行いますか？保存されていないデータは失われます。
+Restarting:再起動を行います！
 ''')
     elif Language == 'zh':
         with open('languages/language_zh.txt', 'w+', encoding='utf-8') as file:
@@ -159,31 +223,39 @@ Restarting:重启中!
 
 # 检查是否有languages文件夹[20201002]
 if not os.path.exists('languages'):
-    print("\033[1;31;40mLanguages folder does not exise!Creating!")
+    print("\033[1;31mLanguages folder does not exise!Creating!")
     os.mkdir('languages')
-    print("\033[1;31;40mWtiring language files...")
-    print("\033[1;31;40mWtiring English file...[0/2]")
-    WtireTranslateFile('en')
-    print("\033[1;31;40mWtiring Chinese file...[1/2]")
-    WtireTranslateFile('zh')
-    print("\033[1;31;40mWrote language files[2/2]")
-    print("\033[1;31;40mIf there is no translation for your language, you can create a new file called language_[language]. txt, and then edit \"language\" in config")
-Language = os.getcwd() + '\\languages\\language_' + configfound[9:] + '.txt'
+    print("\033[1;31mWtiring language files...")
+    print("\033[1;31mWtiring English file...[0/3]")
+    WriteTranslateFile('en')
+    print("\033[1;31mWriting Japanese file...[1/3]")
+    WriteTranslateFile('ja')
+    print("\033[1;31mWtiring Chinese file...[2/3]")
+    WriteTranslateFile('zh')
+    print("\033[1;31mWrote language files[3/3]")
+    print("\033[1;31mIf there is no translation for your language, you can create a new file called language_[language].txt, and then edit \"language\" in config")
+if 'Windows' in platform.platform():
+    Language = os.getcwd() + '\\languages\\language_' + configfound[9:] + '.txt'
+elif 'Linux' in platform.platform():
+    Language = os.getcwd() + '/languages/language_' + configfound[9:] + '.txt'
 try:
     file = open(Language, encoding='utf-8')
     file.close()
 except IOError:
-    if configfound[9:] == 'en' or configfound[9:] == 'zh':
-        print('\033[1;31;40mThe translate for language: ' + configfound[9:] +
+    if configfound[9:] == 'en' or configfound[9:] == 'ja' or configfound[9:] == 'zh':
+        print('\033[1;31mThe translate for language: ' + configfound[9:] +
               ' may have been deleted...Re creating...')
-        WtireTranslateFile(configfound[9:])
+        WriteTranslateFile(configfound[9:])
     else:
-        print('\033[1;31;40mThe translate for language: ' + configfound[9:] +
+        print('\033[1;31mThe translate for language: ' + configfound[9:] +
               ' may not exise...The default language will be used')
         with open(Config, 'w+', encoding='utf-8') as file:
             file.write(
                 'please make sure that /language/language_[Language].txt exist\nLanguage:en')
-        Language = os.getcwd() + '\\languages\\language_en.txt'
+        if 'Windows' in platform.platform():
+            Language = os.getcwd() + '\\languages\\language_' + configfound[9:] + '.txt'   
+        elif 'Linux' in platform.platform():
+            Language = os.getcwd() + '/languages/language_' + configfound[9:] + '.txt'
 print('\033[1;32mUsing Language File: \033[1;33m' + Language)
 # 窗口
 try:
