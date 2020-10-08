@@ -1,3 +1,5 @@
+#Thanks to the author of ScriptBlockPlus: @yuttyann for translating this into Japanese!
+#[Because Google Translate could not be translated into the original meaning, so this sentence was not translated into Japanese]
 #ActionType
 novalid:選択を行ってください。
 $cost:お金を消費します。[<値段>]

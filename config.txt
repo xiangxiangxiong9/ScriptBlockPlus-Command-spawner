@@ -1,2 +1,4 @@
-please make sure that /language/language_[Language].txt exist
-Language:en
+Please make sure that /language/Language-[Language].txt exist
+Default Language is: en_US
+Suppose Locales: en_US,ja[ja_JP],zh_CN
+Language: en_US

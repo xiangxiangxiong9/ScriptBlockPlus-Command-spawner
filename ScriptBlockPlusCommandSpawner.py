@@ -4,9 +4,10 @@ import os
 import time
 import sys
 import re
+import gc
 import subprocess
 import codecs
-import platform
+import locale
 import pyperclip
 import tkinter as tk
 import tkinter.ttk as ttk
@@ -15,11 +16,14 @@ from tkinter import *
 import colorama
 from colorama import init, Fore, Back, Style
 init(autoreset=True)
+tmp = locale.getdefaultlocale()[0]
+del locale
+locale = tmp
+del tmp
+gc.collect()
+print(locale)
 # 语言文件获取
-if 'Windows' in platform.platform():
-    Config = os.getcwd() + '\\config.txt'
-elif 'Linux' in platform.platform():
-    Config = os.getcwd() + '/config.txt'
+Config = os.getcwd() + '\\config.txt'
 # 判断文件是否存在
 try:
     f = open(Config, 'r', encoding='utf-8')
@@ -28,7 +32,7 @@ except IOError:
     print("\033[1;31mConfig file does not exise!Creating!")
     with open(Config, 'w+', encoding='utf-8') as file:
         file.write(
-            'please make sure that /language/language_[Language].txt exist\nLanguage:en')
+            'Please make sure that /language/Language-[Language].txt exist\nDefault Language is: en_US\nSuppose Locales: en_US,ja[ja_JP],zh_CN\nLanguage:en_US')
 Configfile = open(Config, 'r', encoding='utf-8')
 print('\033[1;32mConfig File: \033[1;33m' + Config)
 for configfound in Configfile.readlines():
@@ -39,8 +43,8 @@ for configfound in Configfile.readlines():
 
 
 def WriteTranslateFile(Language):
-    if Language == 'en':
-        with open('languages/language_en.txt', 'w+', encoding='utf-8') as file:
+    if Language == 'en_US':
+        with open('languages/Language-en_US.txt', 'w+', encoding='utf-8') as file:
             file.write(r'''#ActionType
 novalid:Please choose
 $cost:Need and cost money
@@ -99,9 +103,12 @@ RestartMessageboxTitle:Restart?
 RestartMessageboxMessage:Do you want to restart this process?Unsaved data will be lost
 Restarting:Restarting!
 ''')
-    elif Language == 'ja':
-        with open('languages/Language_ja.txt', 'w+', encoding='utf-8') as file:
-            file.write(r'''#ActionType
+        return 0
+    elif Language == 'ja' or Language == 'ja_JP':
+        with open('languages/Language-ja.txt', 'w+', encoding='utf-8') as file:
+            file.write(r'''#Thanks to the author of ScriptBlockPlus: @yuttyann for translating this into Japanese!
+#[Because Google Translate could not be translated into the original meaning, so this sentence was not translated into Japanese]
+#ActionType
 novalid:選択を行ってください。
 $cost:お金を消費します。[<値段>]
 $item:アイテムを消費します。[<アイテムID>[:ダメージ値] <個数> [名前]]
@@ -159,8 +166,14 @@ RestartMessageboxTitle:再起動を行いますか？
 RestartMessageboxMessage:このプログラムを再起動行いますか？保存されていないデータは失われます。
 Restarting:再起動を行います！
 ''')
-    elif Language == 'zh':
-        with open('languages/language_zh.txt', 'w+', encoding='utf-8') as file:
+        with open('languages/Language-ja.txt', 'r', encoding='utf-8') as file:
+            tmp = file.readlines()
+        with open('languages/Language-ja_JP.txt', 'w+', encoding='utf-8') as file:
+            for i in range(0, len(tmp)):
+                file.write(tmp[i])
+        return 0
+    elif Language == 'zh_CN':
+        with open('languages/Language-zh_CN.txt', 'w+', encoding='utf-8') as file:
             file.write(r'''#ActionType
 novalid:请选择
 $cost:需要且消耗钱
@@ -219,43 +232,69 @@ RestartMessageboxTitle:重启？
 RestartMessageboxMessage:你想要重启这个程序吗？未保存的数据将会丢失
 Restarting:重启中!
 ''')
+        return 0
+    else:
+        return 1
 
 
 # 检查是否有languages文件夹[20201002]
 if not os.path.exists('languages'):
     print("\033[1;31mLanguages folder does not exise!Creating!")
     os.mkdir('languages')
-    print("\033[1;31mWtiring language files...")
-    print("\033[1;31mWtiring English file...[0/3]")
-    WriteTranslateFile('en')
-    print("\033[1;31mWriting Japanese file...[1/3]")
-    WriteTranslateFile('ja')
-    print("\033[1;31mWtiring Chinese file...[2/3]")
-    WriteTranslateFile('zh')
-    print("\033[1;31mWrote language files[3/3]")
-    print("\033[1;31mIf there is no translation for your language, you can create a new file called language_[language].txt, and then edit \"language\" in config")
-if 'Windows' in platform.platform():
-    Language = os.getcwd() + '\\languages\\language_' + configfound[9:] + '.txt'
-elif 'Linux' in platform.platform():
-    Language = os.getcwd() + '/languages/language_' + configfound[9:] + '.txt'
+    print('Your locale is: %s...\nTry to found translate for your language...' % locale)
+    languagewtire = WriteTranslateFile(locale)
+    if languagewtire == 1:
+        print('\033[1;31mThe translate for language: ' + locale +
+              ' may not exise...The default language will be used')
+        WriteTranslateFile('en_US')
+    else:
+        with open(Config, 'w+', encoding='utf-8') as file:
+            file.write(
+                'Please make sure that /language/Language-[Language].txt exist\nDefault Language is: en_US\nSuppose Locales: en_US,ja[ja_JP],zh_CN\nLanguage:%s' % locale)
+#     print("\033[1;31mWtiring language files...")
+#     print("\033[1;31mWtiring English file...[0/3]")
+#     WriteTranslateFile('en')
+#     print("\033[1;31mWriting Japanese file...[1/3]")
+#     WriteTranslateFile('ja')
+#     print("\033[1;31mWtiring Chinese file...[2/3]")
+#     WriteTranslateFile('zh')
+#     print("\033[1;31mWrote language files[3/3]")
+#     print("\033[1;31mIf there is no translation for your language, you can create a new file called Language-[language].txt, and then edit \"language\" in config")
+Configfile = open(Config, 'r', encoding='utf-8')
+for configfound in Configfile.readlines():
+    key = "Language:"
+    if key in configfound:
+        s = re.findall('"TimeSpan":"([\d.]+)"', configfound)
+    Configfile.close()
+Language = os.getcwd() + '\\languages\\Language-' + \
+    configfound.split(':')[1].replace(' ', '') + '.txt'
 try:
     file = open(Language, encoding='utf-8')
     file.close()
 except IOError:
-    if configfound[9:] == 'en' or configfound[9:] == 'ja' or configfound[9:] == 'zh':
-        print('\033[1;31mThe translate for language: ' + configfound[9:] +
-              ' may have been deleted...Re creating...')
-        WriteTranslateFile(configfound[9:])
+    if configfound.split(':')[1].replace(' ', '') == 'en_US' or configfound.split(':')[1].replace(' ', '') == 'ja' or configfound.split(':')[1].replace(' ', '') == 'ja_JP' or configfound.split(':')[1].replace(' ', '') == 'zh_CN':
+        print('\033[1;31mThe translate for language: ' + configfound.split(':')[1].replace(' ', '') +
+              ' may have been deleted or it has not write...Re creating...')
+        WriteTranslateFile(configfound.split(':')[1].replace(' ', ''))
     else:
-        print('\033[1;31mThe translate for language: ' + configfound[9:] +
+        print('\033[1;31mThe translate for language: ' + configfound.split(':')[1].replace(' ', '') +
               ' may not exise...The default language will be used')
         with open(Config, 'w+', encoding='utf-8') as file:
             file.write(
-                'please make sure that /language/language_[Language].txt exist\nLanguage:en')
-        if 'Windows' in platform.platform():
-            Language = os.getcwd() + '\\languages\\language_' + configfound[9:] + '.txt'   
-        elif 'Linux' in platform.platform():
-            Language = os.getcwd() + '/languages/language_' + configfound[9:] + '.txt'
+                'Please make sure that /language/Language-[Language].txt exist\nDefault Language is: en_US\nSuppose Locales: en_US,ja[ja_JP],zh_CN\nLanguage:en_US')
+        try:
+            file = open(Language, 'r', encoding='utf-8')
+            file.close()
+        except:
+            WriteTranslateFile('en_US')
+        Configfile = open(Config, 'r', encoding='utf-8')
+        for configfound in Configfile.readlines():
+            key = "Language:"
+            if key in configfound:
+                s = re.findall('"TimeSpan":"([\d.]+)"', configfound)
+            Configfile.close()
+        Language = os.getcwd() + '\\languages\\Language-' + \
+            configfound.split(':')[1].replace(' ', '') + '.txt'
 print('\033[1;32mUsing Language File: \033[1;33m' + Language)
 # 窗口
 try:
