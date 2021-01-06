@@ -513,6 +513,7 @@ MENU2 = OptionMenu(window, var3, ScriptType01, ScriptType02,
 # 添加方式
 var5 = StringVar()
 var5.set(Todo01)
+var6 = StringVar()
 MENU3 = OptionMenu(window, var5, Todo01, Todo02, Todo03).place(x=700, y=0)
 # 输出
 
@@ -520,11 +521,16 @@ MENU3 = OptionMenu(window, var5, Todo01, Todo02, Todo03).place(x=700, y=0)
 def output():
     if var3.get() == ScriptType01:
         var4.set('interact')
+    elif var3.get() == ScriptType02:
+        var4.set('walk')
     else:
-        if var3.get() == ScriptType02:
-            var4.set('walk')
-        else:
-            var4.set('break')
+        var4.set('break')
+    if var5.get() == Todo01:
+        var6.set('create')
+    elif var5.get() == Todo02:
+        var6.set('add')
+    else:
+        var6.set('remove')
     # 将else if 替换为 elif [20201002]
     '''if var5.get() == Todo01:
         pyperclip.copy('/sbp ' + var4.get() + ' ' + 'create' +  ' ' + var.get())
@@ -534,15 +540,13 @@ def output():
         pyperclip.copy('/sbp ' + var4.get() + ' ' + 'remove')
     #tk.messagebox.showinfo(title=Information02, message=Information03)'''
     # 先询问再复制到剪切板[20201002]
-    if tk.messagebox.askyesno(title=Information01, message='/sbp ' + var4.get() + ' ' + 'create' + ' ' + var.get()):
-        if var5.get() == Todo01:
+    if var6.get() != 'remove':
+        if tk.messagebox.askyesno(title=Information01, message='/sbp ' + var4.get() + ' ' + var6.get() + ' ' + var.get()):
             pyperclip.copy('/sbp ' + var4.get() + ' ' +
-                           'create' + ' ' + var.get())
-        elif var5.get() == Todo02:
-            pyperclip.copy('/sbp ' + var4.get() + ' ' +
-                           'add' + ' ' + var.get())
-        else:
-            pyperclip.copy('/sbp ' + var4.get() + ' ' + 'remove')
+                           var6.get() + ' ' + var.get())
+            tk.messagebox.showinfo(title=Information02, message=Information03)
+    elif tk.messagebox.askyesno(title=Information01, message='/sbp ' + var4.get() + ' ' + var6.get()):
+        pyperclip.copy('/sbp ' + var4.get() + ' ' + var6.get())
         tk.messagebox.showinfo(title=Information02, message=Information03)
 
 
