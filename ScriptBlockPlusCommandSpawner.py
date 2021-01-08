@@ -8,7 +8,7 @@ import gc
 import urllib.request
 # import socket
 # socket.setdefaulttimeout(20)
-import retrying
+#import retrying
 import subprocess
 import codecs
 import locale
