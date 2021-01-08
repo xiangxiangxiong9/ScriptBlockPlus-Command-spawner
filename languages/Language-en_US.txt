@@ -1,5 +1,5 @@
 #ActionType
-novalid:Please choose
+!novalid:Please choose
 $cost:Need and cost money
 $item:Need and cost item[<item's id> [Many]]
 @actionbar:Send actionbar information[contect time]

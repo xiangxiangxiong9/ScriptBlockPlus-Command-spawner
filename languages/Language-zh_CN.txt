@@ -1,5 +1,5 @@
 #ActionType
-novalid:请选择
+!novalid:请选择
 $cost:需要且消耗钱
 $item:需要且消耗物品[<物品id> [数量]]
 @actionbar:发送快捷栏信息[内容 时间]

@@ -1,7 +1,7 @@
 #Thanks to the author of ScriptBlockPlus: @yuttyann for translating this into Japanese!
 #[Because Google Translate could not be translated into the original meaning, so this sentence was not translated into Japanese]
 #ActionType
-novalid:選択を行ってください。
+!novalid:選択を行ってください。
 $cost:お金を消費します。[<値段>]
 $item:アイテムを消費します。[<アイテムID>[:ダメージ値] <個数> [名前]]
 @actionbar:アクションバーにメッセージを送信します。[<メッセージ>[/秒数]]
