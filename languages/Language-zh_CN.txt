@@ -6,6 +6,8 @@ $item:需要且消耗物品[<物品id> [数量]]
 @amount:允许执行的总次数
 @blocktype:互动方块类型[方块id]
 @bypass:以OP身份执行
+@bypassGROUP:临时给予权限组并执行[命令(/世界)/权限组]
+@bypassPERM:临时给予权限并执行[命令(/世界)/权限]
 @calc:计算[papi变量 >=< 值 失败返回信息]
 @command:以玩家自身身份执行
 @console:以控制台身份执行

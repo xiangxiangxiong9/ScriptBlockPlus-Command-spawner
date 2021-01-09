@@ -6,6 +6,8 @@ $item:Need and cost item[<item's id> [Many]]
 @amount:Total number of allowed executions
 @blocktype:Interactive block type [block id]
 @bypass:Execute as OP
+@bypassGROUP:Temporarily give permission group and execute [Command(/World)/Permission group]
+@bypassPERM:Temporarily give permission  and execute [Command(/World)/Permission]
 @calc:Calculate [papi variable> = <value failure_return_information]
 @command:Execute as player himself
 @console:Execute as Console

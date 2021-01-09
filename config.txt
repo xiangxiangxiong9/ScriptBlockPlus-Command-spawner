@@ -1,4 +1,4 @@
 Please make sure that /language/Language-[Language].txt exist
 Default Language is: en_US
 Suppose Locales: en_US,ja[ja_JP],zh_CN
-Language:zh_CN
+Language:en_US
