@@ -29,11 +29,23 @@ China = False
 ip = json.loads(str(urlopen('http://jsonip.com').read(), 'utf-8'))['ip']
 print('Your ip: ' + ip)
 
-from  geoip2.database import Reader
-country = Reader(r'GeoLite2-Country.mmdb').country(ip).country.iso_code
+
+def base_path(path):
+    if getattr(sys, 'frozen', None):
+        basedir = sys._MEIPASS
+    else:
+        basedir = os.path.dirname(__file__)
+    return basedir
+
+
+from geoip2.database import Reader
+#print(os.path.join(base_path(''), 'GeoLite2-Country.mmdb'))
+country = Reader(os.path.join(
+    base_path(''), 'GeoLite2-Country.mmdb')).country(ip).country.iso_code
 if country == 'CN':
     print('Maybe you are chinese or you are gone to China...')
     China = True
+
 
 class Language():
     # 更改txt为json[20200130]
@@ -41,27 +53,27 @@ class Language():
         print('\033[1;32mTry to get Language: ' + Language + ' file...\033[0m')
         try:
             if China:
-                a =  urllib.request.urlopen(
-                'https://gitee.com/xiangxiangxiong9/ScriptBlockPlus-Command-spawner/raw/master/languages/Language-' + Language + '.json')
+                a = urlopen(
+                    'https://gitee.com/xiangxiangxiong9/ScriptBlockPlus-Command-spawner/raw/master/languages/Language-' + Language + '.json')
                 if a.status == 404:
                     a.close()
                     return 404
                 elif a.status == 200:
                     with open('languages/language-' + Language + '.json', 'w+', encoding='utf-8') as file:
-                         file.write(a.read().decode('utf-8'))
+                        file.write(a.read().decode('utf-8'))
                     a.close()
                 else:
                     a.close()
                     return 1
             else:
-                a =  urllib.request.urlopen(
-                'https://github.com/xiangxiangxiong9/ScriptBlockPlus-Command-spawner/raw/master/languages/Language-' + Language + '.json')
+                a = urlopen(
+                    'https://github.com/xiangxiangxiong9/ScriptBlockPlus-Command-spawner/raw/master/languages/Language-' + Language + '.json')
                 if a.status == 404:
                     a.close()
                     return 404
                 elif a.status == 200:
                     with open('languages/language-' + Language + '.json', 'w+', encoding='utf-8') as file:
-                         file.write(a.read().decode('utf-8'))
+                        file.write(a.read().decode('utf-8'))
                     a.close()
                 else:
                     a.close()
@@ -74,33 +86,34 @@ class Language():
               Language + ' version...\033[0m')
         try:
             if China:
-                a = urllib.request.urlopen(
-                    'https://gitee.com/xiangxiangxiong9/ScriptBlockPlus-Command-spawner/raw/master/languages/Language-' + Language + '.version')
+                a = urlopen(
+                    'https://gitee.com/xiangxiangxiong9/ScriptBlockPlus-Command-spawner/raw/master/languages/Languages-versions.json')
                 if a.status == 404:
                     a.close()
                     return 404
                 elif a.status == 200:
-                    remoteversion = a.read().decode('utf-8')
+                    remoteversions = json.loads(a.read().decode('utf-8'))
                     a.close()
                 else:
                     a.close()
                     return 1
             else:
-                a = urllib.request.urlopen(
-                    'https://github.com/xiangxiangxiong9/ScriptBlockPlus-Command-spawner/raw/master/languages/Language-' + Language + '.version')
+                a = urlopen(
+                    'https://github.com/xiangxiangxiong9/ScriptBlockPlus-Command-spawner/raw/master/languages/Languages-versions.json')
                 if a.status == 404:
                     a.close()
                     return 404
                 elif a.status == 200:
-                    remoteversion = a.read().decode('utf-8')
+                    remoteversions = json.loads(a.read().decode('utf-8'))
                     a.close()
                 else:
                     a.close()
                     return 1
         except:
             return 2
-        if localversion < remoteversion:
-            print('\033[1;31mYour local version has expired. Updating the language file version for you.\033[0m')
+        if localversion < remoteversion['language']:
+            print(
+                '\033[1;31mYour local version has expired. Updating the language file version for you.\033[0m')
             self.GetLanguageFile(Language)
 
 
@@ -151,7 +164,7 @@ def main():
             print("\033[1;31mConfig file does not exise!Creating!\033[0m")
             with open(Config, 'w+', encoding='utf-8') as file:
                 file.write(
-                    'Please make sure that /language/Language-[Language].json exist\nDefault Language is: en_US\nSuppose Locales: en_US,ja[ja_JP],zh_CN\nLanguage:en_US')
+                    'Please make sure that /language/Language-[Language].json exist\nDefault Language is: en_US\nSuppose Locales: en_US,ja[ja_JP],zh_CN\nLanguage:%s' % locale)
         Configfile = open(Config, 'r', encoding='utf-8')
         print('\033[1;32mConfig File: \033[1;33m' + Config + '\033[0m')
         for configfound in Configfile.readlines():
@@ -192,15 +205,14 @@ def main():
 
     print('\033[1;32mUsing Language File: \033[1;33m' + _Language + '\033[0m')
 
-
-
     # 语言文件读取
     # 语言文件var设置[更换方式 [20201002]
     # 更改txt为json[20200130]
     with open(_Language, encoding='utf-8') as LanguageFile:
         LanguageText = json.loads(LanguageFile.read())
-    Language.CheckVersion(_Language.split(os.sep)[-1].replace('Language-','').replace('.json',''),LanguageText['version'])
-    
+    Language.CheckVersion(_Language.split(
+        os.sep)[-1].replace('Language-', '').replace('.json', ''), LanguageText['version'])
+
     import Mode
     if (Windows and not CommandMode) or (not Windows and not CommandMode):
         if Mode.WindowsMode(LanguageText) == 1:

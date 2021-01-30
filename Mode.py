@@ -7,8 +7,7 @@ def WindowsMode(LanguageText):
     TodoValues = list(LanguageText['Todo'].values())
     Button = list(LanguageText['Button'].values())
     Information = list(LanguageText['Information'].values())
-    
-    
+
     import pyperclip
     import subprocess
     import tkinter as tk
@@ -16,7 +15,7 @@ def WindowsMode(LanguageText):
     import tkinter.messagebox
     import sys
     #from tkinter import *
-    
+
     try:
         window = tk.Tk()
     except:
@@ -38,7 +37,6 @@ def WindowsMode(LanguageText):
     def Confirm():
         # if套娃函数 换 elif [20201002]
         if var2.get() != ActionTypeValues[0]:
-            print(var2.get())
             for i in range(len(ActionTypeValues)):
                 if var2.get() == ActionTypeValues[i]:
                     var1.set(ActionType[i])
@@ -48,9 +46,10 @@ def WindowsMode(LanguageText):
 
         if choosed.get():
             print(Information[4])
-            var.set(var.get() + '[' + var1.get() + ' ' + t.get("1.0", "end")[:-1] + ']')
+            var.set(var.get() + '[' + var1.get() +
+                    ' ' + t.get("1.0", "end")[:-1] + ']')
         else:
-            print(Information[3])
+            print(Information[5])
         a.delete(0.0, "end")
         a.insert("insert", var.get())
     # 清除缓冲区
@@ -95,11 +94,11 @@ def WindowsMode(LanguageText):
     def output():
         for i in range(len(ScriptTypeValues)):
             if var3.get() == ScriptTypeValues[i]:
-               var4.set(ScriptType[i]) 
+                var4.set(ScriptType[i])
 
         for i in range(len(TodoValues)):
             if var5.get() == TodoValues[i]:
-               var6.set(Todo[i]) 
+                var6.set(Todo[i])
         # 将else if 替换为 elif [20201002]
         '''if var5.get() == Todo01:
             pyperclip.copy('/sbp ' + var4.get() + ' ' + \
@@ -141,6 +140,7 @@ def WindowsMode(LanguageText):
     ttk.Button(window, text=Button[4], command=restart).place(x=610, y=500)
     window.title(Information[6])
     window.mainloop()
+
 
 def CommandMode(LanguageText):
     import pyperclip
@@ -215,33 +215,33 @@ def CommandMode(LanguageText):
                     if not Todo[tmp3] == 'remove':
                         tmp2 = ScriptType[tmp2]
                         tmp3 = Todo[tmp3]
-                        print(tmp2,tmp3)
+                        print(tmp2, tmp3)
                         print('Command: ' + '/sbp ' +
-                            tmp2 + ' ' + tmp3 + ' ' + data)
+                              tmp2 + ' ' + tmp3 + ' ' + data)
                         pyperclip.copy('/sbp ' + tmp2 + ' ' +
-                                    tmp3 + ' ' + data)
+                                       tmp3 + ' ' + data)
                         input()
                     else:
                         tmp2 = ScriptType[tmp2]
                         tmp3 = Todo[tmp3]
                         print('Command: ' + '/sbp ' +
-                            tmp2 + ' ' + tmp3)
+                              tmp2 + ' ' + tmp3)
                         pyperclip.copy('/sbp ' + tmp2 + ' ' + tmp3)
                         input()
                 else:
                     if not Todo[tmp3] == 'remove':
                         tmp2 = ScriptType[tmp2]
                         tmp3 = Todo[tmp3]
-                        print(tmp2,tmp3)
+                        print(tmp2, tmp3)
                         print('Command: ' + '/sbp ' +
-                            tmp2 + ' ' + tmp3 + ' ' + data)
+                              tmp2 + ' ' + tmp3 + ' ' + data)
                         #pyperclip.copy('/sbp ' + tmp2 + ' ' + tmp3 + ' ' + data)
                         input()
                     else:
                         tmp2 = ScriptType[tmp2]
                         tmp3 = Todo[tmp3]
                         print('Command: ' + '/sbp ' +
-                            tmp2 + ' ' + tmp3)
+                              tmp2 + ' ' + tmp3)
                         #pyperclip.copy('/sbp ' + tmp2 + ' ' + tmp3)
                         input()
         else:
@@ -252,7 +252,7 @@ def CommandMode(LanguageText):
                 continue
             i = 0
             for i in range(len(ActionType)):
-                #print(int(inputcode),i)
+                # print(int(inputcode),i)
                 if int(inputcode) == i:
                     tmp1 = ActionType[i]
                     break
