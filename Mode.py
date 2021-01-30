@@ -142,7 +142,7 @@ def WindowsMode(LanguageText):
     window.title(Information[6])
     window.mainloop()
 
-def CommandMode(name_value='', name='', ActionType='', getscript='', ListOfActionType=''):
+def CommandMode(LanguageText):
     import pyperclip
     import sys
     import os
@@ -157,11 +157,9 @@ def CommandMode(name_value='', name='', ActionType='', getscript='', ListOfActio
 
     data = ''
     while True:
-        for i in range(len(ActionType[1:])):
-            try:
+        for i in range(len(ActionType)):
+            if i != 0:
                 print(str(i) + ': ' + ActionTypeValues[i])
-            except KeyError:
-                pass
         if len(data) == 0:
             print("Please enter action code or exit for close this process")
         else:
@@ -180,52 +178,48 @@ def CommandMode(name_value='', name='', ActionType='', getscript='', ListOfActio
             if not len(data) == 0:
                 while True:
                     print(
-                        'Please input how to trigger the script\n1: interact\n2: walk\n3: break\n4: hit')
+                        'Please input how to trigger the script')
+                    for i in range(len(ScriptType)):
+                        print(str(i) + ': ' + ScriptTypeValues[i])
                     tmp2 = input()
-                    print('Your input:' + inputcode)
-                    if tmp2 != '1' or tmp2 != '2' or tmp2 != '3' or tmp2 != '4':
+                    try:
+                        tmp2 = int(tmp2)
+                    except:
+                        continue
+                    print('Your input:' + str(tmp2))
+                    if tmp2 < len(ScriptType):
                         break
                 while True:
                     print(
-                        'Please input what do you want to do\n1: create\n2: add\n3: remove')
+                        'Please input what do you want to do')
+                    for i in range(len(Todo)):
+                        print(str(i) + ': ' + TodoValues[i])
                     tmp3 = input()
-                    print('Your input:' + inputcode)
-                    if tmp2 != '1' or tmp2 != '2' or tmp2 != '3':
+                    print('Your input:' + str(tmp3))
+                    try:
+                        tmp3 = int(tmp3)
+                    except:
+                        continue
+                    if tmp3 < len(Todo):
                         break
                 print(
                     'The command has been copied to the clipboard. Thanks for using it')
-                if not tmp3 == '3':
-                    if tmp2 == '1':
-                        tmp2 = 'interact'
-                    elif tmp2 == '2':
-                        tmp2 = 'walk'
-                    elif tmp2 == '3':
-                        tmp2 = 'break'
-                    else:
-                        tmp2 = 'hit'
-                    if tmp3 == '1':
-                        tmp3 = 'create'
-                    else:
-                        tmp3 = 'add'
+                if not Todo[tmp3] == 'remove':
+                    tmp2 = ScriptType[tmp2]
+                    tmp3 = Todo[tmp3]
+                    print(tmp2,tmp3)
                     print('Command: ' + '/sbp ' +
                           tmp2 + ' ' + tmp3 + ' ' + data)
                     pyperclip.copy('/sbp ' + tmp2 + ' ' +
                                    tmp3 + ' ' + data)
-                    os.system('pause')
+                    input()
                 else:
-                    if tmp2 == '1':
-                        tmp2 = 'interact'
-                    elif tmp2 == '2':
-                        tmp2 = 'walk'
-                    elif tmp2 == '3':
-                        tmp2 = 'break'
-                    else:
-                        tmp2 = 'hit'
-                    tmp3 = 'remove'
+                    tmp2 = ScriptType[tmp2]
+                    tmp3 = Todo[tmp3]
                     print('Command: ' + '/sbp ' +
-                          tmp2 + ' ' + tmp3 + ' ' + data)
+                          tmp2 + ' ' + tmp3)
                     pyperclip.copy('/sbp ' + tmp2 + ' ' + tmp3)
-                    os.system('pause')
+                    input()
         else:
             try:
                 int(inputcode)
@@ -234,9 +228,12 @@ def CommandMode(name_value='', name='', ActionType='', getscript='', ListOfActio
                 continue
             i = 0
             for i in range(len(ActionType)):
-                if inputcode == i:
+                #print(int(inputcode),i)
+                if int(inputcode) == i:
                     tmp1 = ActionType[i]
                     break
+            if i == 0:
+                continue
             print(ActionTypeValues[i])
             print('Please input script\'s value,or cancel to back')
             inputcode = input()

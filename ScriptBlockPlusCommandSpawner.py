@@ -8,7 +8,7 @@ import gc
 from urllib.request import urlopen as get
 # import socket
 # socket.setdefaulttimeout(20)
-import retrying
+#import retrying
 # import codecs
 import locale
 import json
@@ -205,8 +205,7 @@ def main():
     if (Windows and not CommandMode) or (not Windows and not CommandMode):
         Mode.WindowsMode(LanguageText)
     if CommandMode:
-        Mode.CommandMode(name_value=globals(), name=[name for name in globals(
-        )], ActionType=ActionType, getscript=getscript(), ListOfActionType=ListOfActionType)
+        Mode.CommandMode(LanguageText)
 
 
 main()
