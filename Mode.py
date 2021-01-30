@@ -146,6 +146,13 @@ def CommandMode(LanguageText):
     import pyperclip
     import sys
     import os
+    try:
+        pyperclip.copy(pyperclip.paste)
+        Copy = True
+    except pyperclip.PyperclipException:
+        print('Can not copy/pasts,the command will not copy to your clipboard')
+        Copy = False
+
     ActionType = list(LanguageText['ActionType'].keys())
     ActionTypeValues = list(LanguageText['ActionType'].values())
     ScriptType = list(LanguageText['ScriptType'].keys())
@@ -202,24 +209,42 @@ def CommandMode(LanguageText):
                         continue
                     if tmp3 < len(Todo):
                         break
-                print(
-                    'The command has been copied to the clipboard. Thanks for using it')
-                if not Todo[tmp3] == 'remove':
-                    tmp2 = ScriptType[tmp2]
-                    tmp3 = Todo[tmp3]
-                    print(tmp2,tmp3)
-                    print('Command: ' + '/sbp ' +
-                          tmp2 + ' ' + tmp3 + ' ' + data)
-                    pyperclip.copy('/sbp ' + tmp2 + ' ' +
-                                   tmp3 + ' ' + data)
-                    input()
+                if Copy:
+                    print(
+                        'The command has been copied to the clipboard. Thanks for using it')
+                    if not Todo[tmp3] == 'remove':
+                        tmp2 = ScriptType[tmp2]
+                        tmp3 = Todo[tmp3]
+                        print(tmp2,tmp3)
+                        print('Command: ' + '/sbp ' +
+                            tmp2 + ' ' + tmp3 + ' ' + data)
+                        pyperclip.copy('/sbp ' + tmp2 + ' ' +
+                                    tmp3 + ' ' + data)
+                        input()
+                    else:
+                        tmp2 = ScriptType[tmp2]
+                        tmp3 = Todo[tmp3]
+                        print('Command: ' + '/sbp ' +
+                            tmp2 + ' ' + tmp3)
+                        pyperclip.copy('/sbp ' + tmp2 + ' ' + tmp3)
+                        input()
                 else:
-                    tmp2 = ScriptType[tmp2]
-                    tmp3 = Todo[tmp3]
-                    print('Command: ' + '/sbp ' +
-                          tmp2 + ' ' + tmp3)
-                    pyperclip.copy('/sbp ' + tmp2 + ' ' + tmp3)
-                    input()
+                    if not Todo[tmp3] == 'remove':
+                        tmp2 = ScriptType[tmp2]
+                        tmp3 = Todo[tmp3]
+                        print(tmp2,tmp3)
+                        print('Command: ' + '/sbp ' +
+                            tmp2 + ' ' + tmp3 + ' ' + data)
+                        pyperclip.copy('/sbp ' + tmp2 + ' ' +
+                                    tmp3 + ' ' + data)
+                        input()
+                    else:
+                        tmp2 = ScriptType[tmp2]
+                        tmp3 = Todo[tmp3]
+                        print('Command: ' + '/sbp ' +
+                            tmp2 + ' ' + tmp3)
+                        pyperclip.copy('/sbp ' + tmp2 + ' ' + tmp3)
+                        input()
         else:
             try:
                 int(inputcode)
