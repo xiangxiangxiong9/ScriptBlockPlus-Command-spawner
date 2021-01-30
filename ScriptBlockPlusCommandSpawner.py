@@ -5,93 +5,121 @@ import time
 import sys
 import re
 import gc
-import urllib.request
+from urllib.request import urlopen as get
 # import socket
 # socket.setdefaulttimeout(20)
-# import retrying
+import retrying
 # import codecs
 import locale
+import json
 import platform
-import sub
+import socket
 nogetlocale = False
 Windows = False
-if platform == 'Windows':
+if platform.system() == 'Windows':
     Windows = True
     import colorama
     from colorama import init, Fore, Back, Style
     init(autoreset=True)
 
+from urllib.request import urlopen
+import json
+import os
+China = False
+ip = json.loads(str(urlopen('http://jsonip.com').read(), 'utf-8'))['ip']
+print('Your ip: ' + ip)
 
-def getLanguageFile(Language):
-    print('\033[1;32mTry to get Language: ' +
-          Language + ' on GitHub...\033[0m')
-    try:
-        a = urllib.request.urlopen(
-            'https://github.com/xiangxiangxiong9/ScriptBlockPlus-Command-spawner/raw/master/languages/Language-' + Language + '.txt')
-        if a.status == 404:
-            a.close()
-            return 404
-        elif a.status == 200:
-            with open('languages/language-' + Language + '.txt', 'w+', encoding='utf-8') as file:
-                file.write(a.read().decode('utf-8'))
-                a.close()
-            return 0
-        else:
-            a.close()
-            return 1
-    except:
-        print('\033[1;31mGet file on GitHub failed...\n\033[1;32mTry to get Language: ' +
-              Language + ' on FastGit...\033[0m')
+from  geoip2.database import Reader
+country = Reader(r'GeoLite2-Country.mmdb').country(ip).country.iso_code
+if country == 'CN':
+    print('Maybe you are chinese or you are gone to China...')
+    China = True
+
+class Language():
+    # 更改txt为json[20200130]
+    def GetLanguageFile(Language):
+        print('\033[1;32mTry to get Language: ' + Language + ' file...\033[0m')
         try:
-            b = urllib.request.urlopen(
-                'https://hub.fastgit.org/xiangxiangxiong9/ScriptBlockPlus-Command-spawner/raw/master/languages/Language-' + Language + '.txt')
-            if b.status == 404:
-                b.close()
-                return 404
-            elif b.status == 200:
-                with open('languages/language-' + Language + '.txt', 'w+', encoding='utf-8') as file:
-                    file.write(b.read().decode('utf-8'))
-                    b.close()
-                return 0
-            else:
-                b.close()
-                return 1
-        except:
-            print('\033[1;31mGet file on FastGit failed...\n\033[1;32mTry to get Language: ' +
-                  Language + ' on Gitee...\033[0m')
-            try:
-                c = urllib.request.urlopen(
-                    'https://gitee.com/xiangxiangxiong9/ScriptBlockPlus-Command-spawner/raw/master/languages/Language-' + Language + '.txt')
-                if c.status == 404:
-                    c.close()
+            if China:
+                a =  urllib.request.urlopen(
+                'https://gitee.com/xiangxiangxiong9/ScriptBlockPlus-Command-spawner/raw/master/languages/Language-' + Language + '.json')
+                if a.status == 404:
+                    a.close()
                     return 404
-                elif c.status == 200:
-                    with open('languages/language-' + Language + '.txt', 'w+', encoding='utf-8') as file:
-                        file.write(c.read().decode('utf-8'))
-                        c.close()
-                    return 0
+                elif a.status == 200:
+                    with open('languages/language-' + Language + '.json', 'w+', encoding='utf-8') as file:
+                         file.write(a.read().decode('utf-8'))
+                    a.close()
                 else:
-                    c.close()
+                    a.close()
                     return 1
-            except:
-                return 2
+            else:
+                a =  urllib.request.urlopen(
+                'https://github.com/xiangxiangxiong9/ScriptBlockPlus-Command-spawner/raw/master/languages/Language-' + Language + '.json')
+                if a.status == 404:
+                    a.close()
+                    return 404
+                elif a.status == 200:
+                    with open('languages/language-' + Language + '.json', 'w+', encoding='utf-8') as file:
+                         file.write(a.read().decode('utf-8'))
+                    a.close()
+                else:
+                    a.close()
+                    return 1
+        except:
+            return 2
+
+    def CheckVersion(Language, localversion):
+        print('\033[1;32mChecking the language ' +
+              Language + ' version...\033[0m')
+        try:
+            if China:
+                a = urllib.request.urlopen(
+                    'https://gitee.com/xiangxiangxiong9/ScriptBlockPlus-Command-spawner/raw/master/languages/Language-' + Language + '.version')
+                if a.status == 404:
+                    a.close()
+                    return 404
+                elif a.status == 200:
+                    remoteversion = a.read().decode('utf-8')
+                    a.close()
+                else:
+                    a.close()
+                    return 1
+            else:
+                a = urllib.request.urlopen(
+                    'https://github.com/xiangxiangxiong9/ScriptBlockPlus-Command-spawner/raw/master/languages/Language-' + Language + '.version')
+                if a.status == 404:
+                    a.close()
+                    return 404
+                elif a.status == 200:
+                    remoteversion = a.read().decode('utf-8')
+                    a.close()
+                else:
+                    a.close()
+                    return 1
+        except:
+            return 2
+        if localversion < remoteversion:
+            print('\033[1;31mYour local version has expired. Updating the language file version for you.\033[0m')
+            self.GetLanguageFile(Language)
 
 
 def main():
     global nogetlocale
+    CommandMode = False
     for i in sys.argv:
         if i == '-nogui':
             CommandMode = True
         elif '-language=' in i:
             nogetlocale = True
-            Language = i[10:]
+            _Language = i[10:]
     if nogetlocale:
-        if not os.path.isfile(os.getcwd() + os.sep + 'languages' + os.sep + 'Language-' + Language + '.txt'):
+        if not os.path.isfile(os.getcwd() + os.sep + 'languages' + os.sep + 'Language-' + _Language + '.json'):
             if not os.path.exists('languages'):
                 print(
                     "\033[1;31mLanguages folder does not exise!Creating!\033[0m")
                 os.mkdir('languages')
-            languagewtire = getLanguageFile(Language)
+            languagewtire = Language.GetLanguageFile(_Language)
             if languagewtire == 0:
                 pass
             elif languagewtire == 2:
@@ -99,11 +127,12 @@ def main():
                     '\033[1;31mThere may be something wrong with your network,we cannot get files on the server.Please try again.\033[0m')
                 sys.exit(0)
             elif languagewtire == 404:
-                print('\033[1;31mThe translate for language: ' + Language +
+                print('\033[1;31mThe translate for language: ' + _Language +
                       ' may not exise...Ignore -language option\033[0m')
                 nogetlocale = False
-        Language = os.getcwd() + os.sep + 'languages' + os.sep + \
-            'Language-' + Language + '.txt'
+        # 更改txt为json[20200130]
+        _Language = os.getcwd() + os.sep + 'languages' + os.sep + \
+            'Language-' + _Language + '.json'
 
     if not nogetlocale:
         global locale
@@ -122,7 +151,7 @@ def main():
             print("\033[1;31mConfig file does not exise!Creating!\033[0m")
             with open(Config, 'w+', encoding='utf-8') as file:
                 file.write(
-                    'Please make sure that /language/Language-[Language].txt exist\nDefault Language is: en_US\nSuppose Locales: en_US,ja[ja_JP],zh_CN\nLanguage:en_US')
+                    'Please make sure that /language/Language-[Language].json exist\nDefault Language is: en_US\nSuppose Locales: en_US,ja[ja_JP],zh_CN\nLanguage:en_US')
         Configfile = open(Config, 'r', encoding='utf-8')
         print('\033[1;32mConfig File: \033[1;33m' + Config + '\033[0m')
         for configfound in Configfile.readlines():
@@ -136,14 +165,14 @@ def main():
             if key in configfound:
                 s = re.findall('"TimeSpan":"([\d.]+)"', configfound)
             Configfile.close()
-        Language = os.getcwd() + os.sep + 'languages' + os.sep + 'Language-' + \
-            configfound.split(':')[1].replace(' ', '') + '.txt'
-        if not os.path.isfile(Language):
+        _Language = os.getcwd() + os.sep + 'languages' + os.sep + 'Language-' + \
+            configfound.split(':')[1].replace(' ', '') + '.json'
+        if not os.path.isfile(_Language):
             if not os.path.exists('languages'):
                 print(
                     "\033[1;31mLanguages folder does not exise!Creating!\033[0m")
                 os.mkdir('languages')
-            languagewtire = getLanguageFile(
+            languagewtire = Language.GetLanguageFile(
                 configfound.split(':')[1].replace(' ', ''))
             if languagewtire == 0:
                 pass
@@ -154,107 +183,29 @@ def main():
             elif languagewtire == 404:
                 print('\033[1;31mThe translate for language: ' + locale +
                       ' may not exise...The default language will be used\033[0m')
-                getLanguageFile('en_US')
+                Language.GetLanguageFile('en_US')
                 with open(Config, 'w+', encoding='utf-8') as file:
                     file.write(
-                        'Please make sure that /language/Language-[Language].txt exist\nDefault Language is: en_US\nSuppose Locales: en_US,ja[ja_JP],zh_CN\nLanguage:en_US')
+                        'Please make sure that /language/Language-[Language].json exist\nDefault Language is: en_US\nSuppose Locales: en_US,ja[ja_JP],zh_CN\nLanguage:en_US')
 
         #@retrying.retry(stop_max_attempt_number=3)
 
-    print('\033[1;32mUsing Language File: \033[1;33m' + Language + '\033[0m')
+    print('\033[1;32mUsing Language File: \033[1;33m' + _Language + '\033[0m')
 
-    def getscript():
-        resule = []
-        for i in range(len(ActionType)):
-            try:
-                resule.append(globals()[ActionType[i]])
-            except KeyError as err:
-                pass
-        return resule
+
 
     # 语言文件读取
-    # 语言文件var设置[更换方式 [20201002]]
-    with open(Language, encoding='utf-8') as LanguageFile:
-        LanguageText = LanguageFile.readlines()
-    ListOfActionType = ["!novalid", "$cost", "$item", "@actionbar", "@amount", "@blocktype", "@bypass", "@bypassGROUP", "@bypassPERM", "@calc", "@command", "@console", "@cooldown", "@delay", "@execute",
-                        "@group", "@groupADD", "@groupREMOVE", "@hand", "@oldcooldown", "@perm", "@permADD", "@permREMOVE", "@player", "@say", "@scriptaction", "@server", "@sound", "@title"]
-    ListOfScriptType = ["interact", "walk", "break"]
-    ListOfTodo = ["create", "add", "remove"]
-    ListOfButton = ["CheckToAdd", "ClearTextInput",
-                    "ClearTemp", "OutPut", "Restart"]
-    ListOfInformation = ["OutputTitle1", "OutputTitle2", "OutputMessage",
-                         "TempText", "AddSuccess", "AddFailed", "WindowTitle", "RestartMessageboxTitle", "RestartMessageboxMessage", "Restarting"]
-
-    ActionType = []
-    for i in ListOfActionType:
-        ActionType.append(i[1:])
-
-    for tmp in LanguageText:
-        for i in range(0, len(ListOfActionType)):
-            if ListOfActionType[i] == tmp.split(':')[0]:
-                temp = ''
-                for j in range(1, len(tmp.split(':'))):
-                    temp = temp + tmp.split(':')[j]
-                temp = temp[:-1]
-                print(ListOfActionType[i][1:], '=', temp)
-                # no = str(i + 1)
-                # if len(no) == 1:
-                #     no = '0' + no
-                globals()[ActionType[i]] = temp
-        for i in range(0, len(ListOfScriptType)):
-            if ListOfScriptType[i] == tmp.split(':')[0]:
-                temp = ''
-                for j in range(1, len(tmp.split(':'))):
-                    temp = temp + tmp.split(':')[j]
-                temp = temp[:-1]
-                print(ListOfScriptType[i], '=', temp)
-                no = str(i + 1)
-                if len(no) == 1:
-                    no = '0' + no
-                globals()["ScriptType" + no] = temp
-        for i in range(0, len(ListOfTodo)):
-            if ListOfTodo[i] == tmp.split(':')[0]:
-                temp = ''
-                for j in range(1, len(tmp.split(':'))):
-                    temp = temp + tmp.split(':')[j]
-                temp = temp[:-1]
-                print(ListOfTodo[i], '=', temp)
-                no = str(i + 1)
-                if len(no) == 1:
-                    no = '0' + no
-                globals()["Todo" + no] = temp
-        for i in range(0, len(ListOfButton)):
-            if ListOfButton[i] == tmp.split(':')[0]:
-                temp = ''
-                for j in range(1, len(tmp.split(':'))):
-                    temp = temp + tmp.split(':')[j]
-                temp = temp[:-1]
-                print(ListOfButton[i], '=', temp)
-                no = str(i + 1)
-                if len(no) == 1:
-                    no = '0' + no
-                globals()["Button" + no] = temp
-        for i in range(0, len(ListOfInformation)):
-            if ListOfInformation[i] == tmp.split(':')[0]:
-                temp = ''
-                for j in range(1, len(tmp.split(':'))):
-                    temp = temp + tmp.split(':')[j]
-                temp = temp[:-1]
-                print(ListOfInformation[i], '=', temp)
-                no = str(i + 1)
-                if len(no) == 1:
-                    no = '0' + no
-                globals()["Information" + no] = temp
-    CommandMode = False
-    # print([str(globals()), str([name for name in globals()])])
-    for i in sys.argv:
-        if i == '-nogui':
-            CommandMode = True
-    if not Windows and not CommandMode:
-        sub.WindowsMode.windows(
-            name_value=globals(), name=[name for name in globals()], ActionType=ActionType, getscript=getscript(), ListOfActionType=ListOfActionType)
+    # 语言文件var设置[更换方式 [20201002]
+    # 更改txt为json[20200130]
+    with open(_Language, encoding='utf-8') as LanguageFile:
+        LanguageText = json.loads(LanguageFile.read())
+    Language.CheckVersion(_Language.split(os.sep)[-1].replace('Language-','').replace('.json',''),LanguageText['version'])
+    
+    import Mode
+    if (Windows and not CommandMode) or (not Windows and not CommandMode):
+        Mode.WindowsMode(LanguageText)
     if CommandMode:
-        sub.CommandMode.cmd(name_value=globals(), name=[name for name in globals(
+        Mode.CommandMode(name_value=globals(), name=[name for name in globals(
         )], ActionType=ActionType, getscript=getscript(), ListOfActionType=ListOfActionType)
 
 
