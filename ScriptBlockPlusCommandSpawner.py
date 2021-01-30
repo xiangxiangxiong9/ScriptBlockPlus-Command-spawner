@@ -203,7 +203,8 @@ def main():
     
     import Mode
     if (Windows and not CommandMode) or (not Windows and not CommandMode):
-        Mode.WindowsMode(LanguageText)
+        if Mode.WindowsMode(LanguageText) == 1:
+            CommandMode = True
     if CommandMode:
         Mode.CommandMode(LanguageText)
 
