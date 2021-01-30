@@ -235,15 +235,14 @@ def CommandMode(LanguageText):
                         print(tmp2,tmp3)
                         print('Command: ' + '/sbp ' +
                             tmp2 + ' ' + tmp3 + ' ' + data)
-                        pyperclip.copy('/sbp ' + tmp2 + ' ' +
-                                    tmp3 + ' ' + data)
+                        #pyperclip.copy('/sbp ' + tmp2 + ' ' + tmp3 + ' ' + data)
                         input()
                     else:
                         tmp2 = ScriptType[tmp2]
                         tmp3 = Todo[tmp3]
                         print('Command: ' + '/sbp ' +
                             tmp2 + ' ' + tmp3)
-                        pyperclip.copy('/sbp ' + tmp2 + ' ' + tmp3)
+                        #pyperclip.copy('/sbp ' + tmp2 + ' ' + tmp3)
                         input()
         else:
             try:
