@@ -111,7 +111,7 @@ class Language():
                     return 1
         except:
             return 2
-        if localversion < remoteversion['language']:
+        if localversion < remoteversions['language']:
             print(
                 '\033[1;31mYour local version has expired. Updating the language file version for you.\033[0m')
             self.GetLanguageFile(Language)
